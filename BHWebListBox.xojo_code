@@ -2,6 +2,41 @@
 Protected Class BHWebListBox
 Inherits WebListbox
 	#tag Method, Flags = &h0
+		Sub AddRow(pRowTag as Variant, pItems() As String)
+		  Me.AddRow()
+		  
+		  Me.RowTag(me.LastIndex) = pRowTag
+		  Me.Row(me.LastIndex, pItems)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub AddRow(pRowTag as Variant, ParamArray pItems as String)
+		  me.AddRow(pRowTag, pItems)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Columns() As String()
+		  if Columns.Ubound <> -1 then return Columns
+		  
+		  dim ColumnsHeaderName() as string
+		  if me.HasHeading = true then
+		    For pCol As Integer = 0 To Me.ColumnCount - 1
+		      ColumnsHeaderName.Append(me.Heading(pCol))
+		    Next
+		  else
+		    For pCol As Integer = 0 To Me.ColumnCount - 1
+		      ColumnsHeaderName.Append(pCol.StringValue)
+		    Next
+		  end if
+		  
+		  Columns = ColumnsHeaderName
+		  Return ColumnsHeaderName()
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Find(pString as String, pColumn as Integer) As Integer
 		  For pRow As Integer = 0 To Me.RowCount - 1
 		    If pString = Me.Cell(pRow, pColumn) Then
@@ -36,6 +71,45 @@ Inherits WebListbox
 		  Return -1
 		End Function
 	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Row(pRow As Integer) As String()
+		  Dim pValues() As String
+		  
+		  For pColumn As Integer = 0 To Me.ColumnCount - 1
+		    pValues.Append(Me.Cell(pRow, pColumn))
+		  Next
+		  
+		  Return pValues
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Row(pRow As Integer, pValues() As String)
+		  For pColumn As Integer = 0 To pValues.UBound
+		    Me.Cell(pRow, pColumn) = pValues(pColumn)
+		  Next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Row(pRow As Integer, ParamArray pValues As String)
+		  Me.Row(pRow, pValues)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Row(pRow As Integer, pTags() As Variant)
+		  For pColumn As Integer = 0 To pTags.UBound
+		    Me.CellTag(pRow, pColumn) = pTags(pColumn)
+		  Next
+		End Sub
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h0
+		Columns() As String
+	#tag EndProperty
 
 
 	#tag ViewBehavior
