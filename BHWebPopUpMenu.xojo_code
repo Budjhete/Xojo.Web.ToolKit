@@ -8,6 +8,18 @@ Inherits WebPopupMenu
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function Find(pTag As Variant) As Integer
+		  For pRow As Integer = 0 To Me.ListCount - 1
+		    If Me.RowTag(pRow) = pTag Then
+		      Return pRow
+		    End If
+		  Next
+		  
+		  Return -1
+		End Function
+	#tag EndMethod
+
 
 	#tag ViewBehavior
 		#tag ViewProperty
